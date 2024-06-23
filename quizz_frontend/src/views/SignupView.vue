@@ -1,20 +1,19 @@
 <template>
     <body> 
-        <main class="px-8 py-6 bg-gray-100">
-            <div class="max-w-7xl mx-auto grid grid-cols-4 gap-4">
-                <div class="main-left col-span-2">
-                    <div class="p-12 bg-white border border-gray-200 rounded-lg">
-                        <h1 class="mb-6 text-2xl">Sign Up</h1>
+            <div class="flex justify-center p-5 md:p-10 lg:p-20 h-full bg-[#BADFE7]">
+                <div class="shadow-md w-full md:w-1/3 bg-[#C2EDCE] content-center text-center font-OpenSans">
+                    <div class="pt-2 md:pt-4 text-sm md:text-base">
+                        <h1 class="text-lg md:text-2xl font-bold">Sign Up</h1>
 
-                        <p class="font-bold">
+                        <p class="text-[#979797] text-center text-xs md:text-sm">
                             Already have an account? <RouterLink to="/login" class="underline">Click here</RouterLink> to login!
                         </p>
                     </div>
                 </div>
 
-                <div class="main-center col-span-2 space-y-4">
-                    <div class="p-12 bg-white border border-gray-200 rounded-lg">
-                        <form class="space-y-6" v-on:submit.prevent="submitForm">
+                
+                    <div class="shadow-md w-full md:w-1/2 p-14 bg-white font-OpenSans">
+                        <form class="space-y-4 md:space-y-6 text-xs" v-on:submit.prevent="submitForm">
                             <div>
                                 <label>Name</label><br>
                                 <input type="name" placeholder="Your name" class="w-full mt-2 py-4 px-6 border border-gray-200 rounded-lg" v-model="form.name">
@@ -42,13 +41,13 @@
                             </template>
                             
                             <div>
-                                <button class="py-4 px-6 bg-purple-600 text-white rounded-lg">Sign Up</button>
+                                <button class="py-2 px-6 rounded-full bg-[#BADFE7] hover:bg-sky-800 hover:text-white active:ring active:ring-sky-600">Sign Up</button>
                             </div>
                         </form>
                     </div>
-                </div>
+                
             </div>
-        </main>
+        
     </body>
 </template>
 
@@ -107,19 +106,18 @@
 
                 // Submit form data if no errors
                 if (this.errors.length === 0) {
-                    // Log the form data to the console
-                    console.log('Form Data:', {
-                        email: this.form.email,
-                        name: this.form.name,
-                        password1: this.form.password1
-                    });
-
                     axios
-                        .post('/api/signup/', this.form)
+                        .post('http://localhost:8000/account/signup/', this.form)
                         .then(response => {
                             if (response.data.message === 'success') {
                                 // Show success toast if signup is successful
-                                this.toastStore.showToast(5000, 'The user is registered. Please activate your account by clicking your email link.', 'bg-emerald-500')
+                                this.toastStore.showToast(5000, 'The user is registered. Please proceed now to login page', 'bg-emerald-500')
+
+                                // Log the form data to console
+                                console.log('Email:', this.form.email)
+                                console.log('Name:', this.form.name)
+                                console.log('Password1:', this.form.password1)
+                                console.log('Password2:', this.form.password2)
 
                                 // Clear form fields
                                 this.form.email = ''
@@ -128,14 +126,13 @@
                                 this.form.password2 = ''
                             } else {
                                 // Show error toast if something went wrong during signup
-                                this.toastStore.showToast(5000, 'Something went wrong. Please try again', 'bg-red-300')
+                                this.toastStore.showToast(5000, this.errors, 'bg-red-300')
                             }
                         })
                         .catch(error => {
                             console.log('error', error)
-                        });
+                        })
                 }
-
             }
         }
     }
