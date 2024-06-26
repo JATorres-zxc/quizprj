@@ -59,4 +59,4 @@ class User(AbstractBaseUser, PermissionsMixin):
         if self.avatar:
             return settings.WEBSITE_URL + self.avatar.url
         else:
-            return 'https://picsum.photos/200/200'
+            return 'https://th.bing.com/th/id/R.cd339ef7f55859e860abc1741881614c?rik=lL%2bRhSvKANke%2bw&riu=http%3a%2f%2fpixelartmaker-data-78746291193.nyc3.digitaloceanspaces.com%2fimage%2f636266805787fae.png&ehk=F5mHKRHn02trPSl937nQ3CDtVjNuX%2bOA5OeMedp9RI4%3d&risl=&pid=ImgRaw&r=0'

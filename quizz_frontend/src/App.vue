@@ -46,10 +46,19 @@
                 </div> -->
 
                 <div class="menu-right">
-                    <router-link to="/login" class="mr-4 py-4 px-6 bg-gray-600 text-white rounded-lg">LogIn</router-link>
-                    <router-link to="/signup" class="py-4 px-6 bg-purple-600 text-white rounded-lg">SignUp</router-link>
+                    <!-- if authenticated then show pfp -->
+                    <template v-if="userStore.user.isAuthenticated && userStore.user.id">
+                        <!-- <RouterLink :to="{name: 'profile', params:{'id': userStore.user.id}}"> -->
+                            <img :src="userStore.user.avatar" class="w-12 rounded-full">
+                        <!-- </RouterLink> -->
+                    </template>
+                    <!-- else for unauthenticated -->
+                    <template v-else>
+                        <RouterLink to="/login" class="mr-4 py-4 px-6 bg-gray-600 text-white rounded-lg">Log in</RouterLink>
+                        <RouterLink to="/signup" class="py-4 px-6 bg-purple-600 text-white rounded-lg">Sign up</RouterLink>
+                    </template>
+                    
                 </div>
-
             </div>
         </div>
     </nav>
@@ -61,9 +70,39 @@
 </template>
 
 
-<script setup>
+<script>
+import axios from 'axios'
+import Toast from "../src/components/ToastItem.vue";
+import { useUserStore } from '@/stores/user'
+
+export default {
+    // Setup function to initialize user store
+    setup() {
+        const userStore = useUserStore()
+
+        return {
+            userStore
+        }
+    },
+
+    // Component registration
+    components: {
+        Toast
+    },
+
+    // Lifecycle hook before component creation
+    beforeCreate() {
+        // Initialize user store
+        this.userStore.initStore()
+
+        // Set authorization token in axios headers if available
+        const token = this.userStore.user.access
+
+        if (token) {
+            axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+        } else {
+            axios.defaults.headers.common["Authorization"] = "";
+        }
+    }
+}
 </script>
-
-
-<style scoped>
-</style>

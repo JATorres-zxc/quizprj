@@ -76,3 +76,9 @@ def editPassword(request):
         return JsonResponse({'message': 'success'})
     else:
         return JsonResponse({'message': form.errors.as_json()}, safe=False)
+    
+
+@api_view(['DELETE', 'GET'])    
+def logout():
+    # not implemented yet
+    pass

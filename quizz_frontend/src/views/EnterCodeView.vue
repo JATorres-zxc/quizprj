@@ -40,3 +40,26 @@
         </div>
     </div>
 </template>
+
+
+<script>
+import axios from 'axios'
+
+import { useUserStore } from '../stores/user' // Adjust the path based on your project structure
+
+export default {
+    name: 'EnterCodeView', // Replace with your actual component name
+
+    setup() {
+        const userStore = useUserStore();
+
+        // Initialize store on component mount
+        userStore.initStore();
+
+        // Set Axios headers if user is authenticated
+        if (userStore.user.isAuthenticated) {
+            axios.defaults.headers.common["Authorization"] = "Bearer " + userStore.user.access;
+        }
+    }
+}
+</script>
